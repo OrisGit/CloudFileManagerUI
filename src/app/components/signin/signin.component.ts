@@ -21,6 +21,9 @@ export class SigninComponent implements OnInit {
     private router: Router,
     private userService: UserServiceService
   ) {
+    if(this.userService.authenticated) {
+      this.router.navigate(['']);
+    }
   }
 
   ngOnInit(): void {
@@ -33,9 +36,10 @@ export class SigninComponent implements OnInit {
       .subscribe(
         () => this.router.navigate(['']),
         (error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            this.errorField.nativeElement.hidden = false;
+          if (error.status !== 401) {
+            this.errorField.nativeElement.innerText = error.error.message;
           }
+          this.errorField.nativeElement.hidden = false;
         }
       );
   }

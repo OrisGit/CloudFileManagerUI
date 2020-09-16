@@ -53,4 +53,10 @@ export class UserServiceService {
     return this.http.post<User>(url, {headers: headers})
       .pipe(tap(data => this.startSession(data)));
   }
+
+  register(name: string, email: string, password: string) {
+    let url = 'http://localhost:8082/register';
+    console.log("post will send");
+    return this.http.post(url, { name, email, password });
+  }
 }

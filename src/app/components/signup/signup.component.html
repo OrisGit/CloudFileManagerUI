@@ -1,1 +1,24 @@
-<p>signup works!</p>
+<div class="text-center mx-auto" style="width: 400px;">
+  <form class="form-signin" (ngSubmit)="userForm.form.valid && send()" #userForm="ngForm">
+    <img class="mb-4" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Please fill all fields</h1>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="text" name="username" [(ngModel)]="username" id="inputUsername"
+           class="mb-2 form-control" placeholder="Username" required=""
+           autofocus="" #name="ngModel">
+    <div [hidden]="name.valid || name.untouched" class="alert alert-danger mb-2">Username is required</div>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input type="email" name="mail" [(ngModel)]="email" id="inputEmail"
+           class="mb-2 form-control" placeholder="Email address" required=""
+           autofocus="" #mail="ngModel">
+    <div [hidden]="mail.valid || mail.untouched" class="alert alert-danger mb-2">Email is required</div>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input name="pass" type="password" id="inputPassword" class="form-control mb-2"
+           placeholder="Password" required="" #pass="ngModel" [(ngModel)]="password">
+    <div [hidden]="pass.valid || pass.untouched" class="alert alert-danger mb-2">Password is required</div>
+    <div [hidden]="true" #errorfield class="alert alert-danger mb-2">Login or password is not correct</div>
+    <button class="btn btn-lg btn-primary btn-block" [disabled]="!userForm.form.valid"
+            type="submit">Sign up</button>
+    <p class="mt-5 mb-3 text-muted">© 2020</p>
+  </form>
+</div>
