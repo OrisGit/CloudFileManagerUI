@@ -35,6 +35,13 @@ export class ContentManagerService {
       });
   }
 
+  loadContentForDirectoryByIndex(index: number): void {
+    this.loadContent(this.getDirectoryByIndex(index))
+      .subscribe(() => {
+        this.removeToIndex(index);
+      });
+  }
+
   createDirectory(name: string): Observable<Directory> {
     const currentDirectory = this.getCurrentDirectory();
     console.log('create: ' + name + ' in ' + JSON.stringify(currentDirectory));
@@ -73,6 +80,14 @@ export class ContentManagerService {
     }
   }
 
+  private getDirectoryByIndex(index: number): Directory {
+    if (this.breadcrumbs.length === 0) {
+      return null;
+    } else {
+      return this.breadcrumbs[index];
+    }
+  }
+
   private addToPath(directory: Directory): void {
     console.log('add to path: ' + JSON.stringify(directory));
     this.breadcrumbs.push(directory);
@@ -80,7 +95,7 @@ export class ContentManagerService {
 
   private removeLastFromPath(): void {
     console.log('remove last dir from path');
-    this.breadcrumbs.splice(this.breadcrumbs.length - 1, 1);
+    this.removeToIndex(this.breadcrumbs.length - 2);
   }
 
   private loadContentForRoot(): void {
@@ -88,5 +103,11 @@ export class ContentManagerService {
     root.id = this.sessionService.getRootDirectoryId();
     root.name = 'root';
     this.loadContentFor(root);
+  }
+
+  private removeToIndex(index: number): void {
+    console.log('remove to index: ' + index);
+
+    this.breadcrumbs.splice(index + 1, this.breadcrumbs.length - index - 1);
   }
 }

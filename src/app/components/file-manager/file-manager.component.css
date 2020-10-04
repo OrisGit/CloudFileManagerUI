@@ -8,3 +8,18 @@
   transition: fill .6s ease;
   fill: black;
 }
+
+.breadcrumb-link {
+  transition: color .6s ease;
+  color: #4682B4;
+}
+
+.breadcrumb-link:hover {
+  transition: color .6s ease;
+  cursor: pointer;
+  color: black;
+}
+
+.breadcrumb-current {
+  color: black;
+}

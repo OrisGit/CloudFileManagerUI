@@ -34,4 +34,12 @@ export class FileManagerComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  upload(files: any): void {
+    console.log('files to upload ' + JSON.stringify(files));
+  }
+
+  openDirectoryByIndex(index: number): void {
+    this.contentManager.loadContentForDirectoryByIndex(index);
+  }
 }
