@@ -8,14 +8,18 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LogoutComponent } from './components/logout/logout.component';
+import {HttpInterceptorService} from './service/http-interceptor.service';
+import { FileManagerComponent } from './components/file-manager/file-manager.component';
+import { CreateFolderDialogComponent } from './components/create-folder-dialog/create-folder-dialog.component';
 
 
 const appRoutes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'file-manager', component: FileManagerComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -26,7 +30,9 @@ const appRoutes: Routes = [
     SignupComponent,
     WelcomeComponent,
     PageNotFoundComponent,
-    LogoutComponent
+    LogoutComponent,
+    FileManagerComponent,
+    CreateFolderDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +40,11 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

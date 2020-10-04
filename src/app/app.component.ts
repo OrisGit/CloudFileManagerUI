@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { UserServiceService } from './service/user-service.service';
+import {Component} from '@angular/core';
+import {SessionService} from './service/session.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ export class AppComponent {
   title = 'CloudFileStorageFrontendV2';
 
   constructor(
-    public userService: UserServiceService
+    public session: SessionService
   ) {
   }
 }

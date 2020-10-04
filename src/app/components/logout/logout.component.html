@@ -1,3 +1,3 @@
-<div [hidden]="!userService.authenticated">
+<div [hidden]="!session.isLoggedIn">
   <a class="btn btn-outline-danger" (click)="logout()" routerLinkActive="active">Log out</a>
 </div>

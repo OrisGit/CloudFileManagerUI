@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {UserServiceService} from '../../service/user-service.service';
+import {UserService} from '../../service/user.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -19,7 +19,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserServiceService
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -31,9 +31,10 @@ export class SignupComponent implements OnInit {
       .subscribe(
         () => this.router.navigate(['signin']),
         (error: HttpErrorResponse) => {
-          if (error.status === 400) {
+          if (error.status >= 400) {
+            console.log(error);
             this.errorField.nativeElement.hidden = false;
-            this.errorField.nativeElement.innerText = error.error.message;
+            this.errorField.nativeElement.innerText = error.error;
           }
         }
       );

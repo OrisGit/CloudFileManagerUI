@@ -1,8 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {User} from '../../model/user';
-import {UserServiceService} from '../../service/user-service.service';
+import {UserService} from '../../service/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
+import {SessionService} from '../../service/session.service';
 
 @Component({
   selector: 'app-signin',
@@ -19,9 +20,10 @@ export class SigninComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserServiceService
+    private userService: UserService,
+    private session: SessionService
   ) {
-    if(this.userService.authenticated) {
+    if (this.session.isLoggedIn) {
       this.router.navigate(['']);
     }
   }
@@ -31,11 +33,11 @@ export class SigninComponent implements OnInit {
 
   login() {
     this.errorField.nativeElement.hidden = true;
-    console.log('login is working');
     this.userService.login(this.email, this.password)
       .subscribe(
-        () => this.router.navigate(['']),
+        () => this.router.navigate(['file-manager']),
         (error: HttpErrorResponse) => {
+          console.log(error);
           if (error.status !== 401) {
             this.errorField.nativeElement.innerText = error.error.message;
           }

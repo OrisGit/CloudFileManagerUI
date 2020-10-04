@@ -1,0 +1,10 @@
+.custom-navigation:hover {
+  transition: fill .6s ease;
+  cursor: pointer;
+  fill: #4682B4;
+}
+
+.custom-navigation {
+  transition: fill .6s ease;
+  fill: black;
+}
