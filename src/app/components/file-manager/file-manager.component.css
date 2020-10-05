@@ -23,3 +23,18 @@
 .breadcrumb-current {
   color: black;
 }
+
+.col-12 {
+  transition: width .6s ease;
+}
+
+.col-8 {
+  transition: width .6s ease;
+}
+
+.breadcrumb {
+  background-color: white;
+  border-color: lightgray;
+  border-style: solid;
+  border-width: 1px;
+}

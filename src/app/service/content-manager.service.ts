@@ -14,6 +14,7 @@ export class ContentManagerService {
   content: DirectoryContent = new DirectoryContent();
   breadcrumbs: Directory[] = [];
 
+
   constructor(
     private directoryService: DirectoryService,
     private sessionService: SessionService

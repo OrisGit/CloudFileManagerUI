@@ -1,105 +1,139 @@
 <div class="container-fluid pb-10" style="min-height: 85%; width: 90%;">
-  <div class="bg-white rounded shadow-sm h-100" style="margin-bottom: 10px">
-    <div class="d-flex border-bottom border-gray pb-2">
-      <div style="font-size: 2em;" class="mr-auto p-2">
-        <div (click)="openPreviousDirectory()" [hidden]="contentManager.breadcrumbs.length <= 1">
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left custom-navigation"
-               fill="currentColor"
-               xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-          </svg>
+
+
+  <div class="row" style="min-height: 100%;">
+    <div [class.col-8] = "this.fileUploaderIsOpen"  [class.col-12] = "!this.fileUploaderIsOpen" style="min-height: 100%;">
+
+      <!--- Navigator -->
+      <div class="container-fluid bg-white rounded shadow-sm" style="margin-bottom: 10px; padding: 0">
+
+        <!--- Header -->
+        <div class="container-fluid border-bottom border-gray" style="padding: 0">
+          <div class="row" style="padding: 0">
+
+            <!-- Back button -->
+            <div class="col-1" style="font-size: 2em; padding-left: 25px; padding-right: 0px;">
+              <div (click)="openPreviousDirectory()" [hidden]="contentManager.breadcrumbs.length <= 1">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left custom-navigation"
+                     fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+              </div>
+            </div>
+
+            <!--- Breadcrumbs -->
+            <div class="col-8" style="padding: 0">
+              <nav aria-label="breadcrumb" class="mr-auto">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a>
+
+                      <svg [class.breadcrumb-link]="this.contentManager.breadcrumbs.length > 1"
+                           [class.breadcrumb-current]="this.contentManager.breadcrumbs.length <= 1"
+                           (click)="openDirectoryByIndex(0)"
+                        width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M6 12.796L11.481 8 6 3.204v9.592zm.659.753l5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                      </svg>
+                    </a>
+                  </li>
+                  <li class="breadcrumb-item"
+                      *ngFor="let directory of this.contentManager.breadcrumbs | slice: 1; let i = index">
+                    <a [class.breadcrumb-link]="i < this.contentManager.breadcrumbs.length - 1"
+                       [class.breadcrumb-current]=" i === this.contentManager.breadcrumbs.length - 2"
+                       (click)="openDirectoryByIndex(i + 1)">
+                      {{directory.name}}
+                    </a>
+                  </li>
+                </ol>
+              </nav>
+            </div>
+
+            <!-- Actions -->
+            <div class="col-3" style="font-size: 2em; padding-right: 0px; padding-right: 25px; text-align: right">
+
+              <!-- Open file uploader action-->
+              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-upload custom-navigation ml-3" (click)="this.fileUploaderIsOpen = !this.fileUploaderIsOpen"
+                   fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                <path fill-rule="evenodd"
+                      d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+              </svg>
+
+              <!-- Create new folder action -->
+              <svg data-toggle="modal" data-target="#exampleModal" width="1em" height="1em" viewBox="0 0 16 16"
+                   class="bi bi-plus-square custom-navigation ml-3" fill="currentColor"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                <path fill-rule="evenodd"
+                      d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg>
+
+              <!-- Select all action -->
+              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2 custom-navigation ml-5"
+                   fill="currentColor"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+              </svg>
+
+              <!-- Selection mode action -->
+              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-all custom-navigation ml-3"
+                   fill="currentColor"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M12.354 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                <path
+                  d="M6.25 8.043l-.896-.897a.5.5 0 1 0-.708.708l.897.896.707-.707zm1 2.414l.896.897a.5.5 0 0 0 .708 0l7-7a.5.5 0 0 0-.708-.708L8.5 10.293l-.543-.543-.707.707z"/>
+              </svg>
+
+            </div>
+          </div>
         </div>
-      </div>
-      <div>
-        <nav aria-label="breadcrumb" class="mr-auto p-2">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a [class.breadcrumb-link]="this.contentManager.breadcrumbs.length > 1" [class.breadcrumb-current]="this.contentManager.breadcrumbs.length <= 1" (click)="openDirectoryByIndex(0)">
-                root
-              </a>
-            </li>
-            <li class="breadcrumb-item" *ngFor="let directory of this.contentManager.breadcrumbs | slice: 1; let i = index">
-              <a [class.breadcrumb-link]="i < this.contentManager.breadcrumbs.length - 1" [class.breadcrumb-current]=" i === this.contentManager.breadcrumbs.length - 2" (click)="openDirectoryByIndex(i + 1)">
+
+        <!--- Folders area -->
+        <div class="container-fluid">
+          <div class="row m-auto">
+
+            <!-- Folder -->
+            <div id="{{directory.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1" (click)="openDirectory(directory)"
+                 *ngFor="let directory of this.contentManager.content.directories">
+
+              <!-- Icon -->
+              <div style="font-size: 5em;">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-folder card-img-top custom-navigation"
+                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z"/>
+                  <path fill-rule="evenodd"
+                        d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z"/>
+                </svg>
+              </div>
+
+              <!-- Name -->
+              <div style="text-align: center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis"
+                   title="{{directory.name}}">
                 {{directory.name}}
-              </a>
-            </li>
-          </ol>
-        </nav>
-      </div>
-      <div style="font-size: 2em;" class="p-2">
+              </div>
 
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-upload custom-navigation ml-3"
-             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-          <path fill-rule="evenodd"
-                d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
-        </svg>
+            </div>
 
-        <svg data-toggle="modal" data-target="#exampleModal" width="1em" height="1em" viewBox="0 0 16 16"
-             class="bi bi-plus-square custom-navigation ml-3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-                d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-          <path fill-rule="evenodd"
-                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-        </svg>
-
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-clipboard custom-navigation ml-3"
-             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-                d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-          <path fill-rule="evenodd"
-                d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
-        </svg>
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrows-move custom-navigation ml-3"
-             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-                d="M7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2zM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10zM.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708l-2-2zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8z"/>
-        </svg>
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash custom-navigation ml-3" fill="currentColor"
-             xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-          <path fill-rule="evenodd"
-                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-        </svg>
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2 custom-navigation ml-5"
-             fill="currentColor"
-             xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-        </svg>
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-all custom-navigation ml-3"
-             fill="currentColor"
-             xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-                d="M12.354 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-          <path
-            d="M6.25 8.043l-.896-.897a.5.5 0 1 0-.708.708l.897.896.707-.707zm1 2.414l.896.897a.5.5 0 0 0 .708 0l7-7a.5.5 0 0 0-.708-.708L8.5 10.293l-.543-.543-.707.707z"/>
-        </svg>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="row m-auto">
-        <div id="{{directory.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1" (click)="openDirectory(directory)"
-             *ngFor="let directory of this.contentManager.content.directories">
-          <div style="font-size: 5em;">
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-folder card-img-top custom-navigation"
-                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z"/>
-              <path fill-rule="evenodd"
-                    d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z"/>
-            </svg>
-          </div>
-          <div style="text-align: center">
-            <span>{{directory.name}}</span>
-          </div>
-        </div>
+
+    <!-- File uploader -->
+    <div class="col-4" [hidden]="!fileUploaderIsOpen">
+      <div class="container-fluid rounded shadow-sm" style="min-height: 100%; width: 100%;">
       </div>
     </div>
   </div>
+
+
 </div>
 
 <app-create-folder-dialog></app-create-folder-dialog>

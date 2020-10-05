@@ -11,6 +11,8 @@ import {ContentManagerService} from '../../service/content-manager.service';
 })
 export class FileManagerComponent implements OnInit {
 
+  fileUploaderIsOpen = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
