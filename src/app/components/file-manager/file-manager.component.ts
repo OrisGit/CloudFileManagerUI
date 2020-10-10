@@ -5,6 +5,8 @@ import {Directory} from '../../model/directory';
 import {ContentManagerService} from '../../service/content-manager.service';
 import {FileService} from '../../service/file.service';
 import {FileDTO} from '../../model/fileDTO';
+import {SelectionService} from '../../service/selection.service';
+import {DirectoryService} from '../../service/directory.service';
 
 @Component({
   selector: 'app-file-manager',
@@ -17,7 +19,6 @@ export class FileManagerComponent implements OnInit {
   contextMenu: ElementRef;
 
   fileUploaderIsOpen = false;
-  selectedFiles: FileDTO[];
 
   constructor(
     private route: ActivatedRoute,
@@ -25,7 +26,9 @@ export class FileManagerComponent implements OnInit {
     private session: SessionService,
     public contentManager: ContentManagerService,
     private renderer: Renderer2,
-    private fileService: FileService
+    private fileService: FileService,
+    private selectionService: SelectionService,
+    private directoryService: DirectoryService
   ) {
     console.log('Costructor');
     if (!this.session.isLoggedIn) {
@@ -53,49 +56,75 @@ export class FileManagerComponent implements OnInit {
     this.contentManager.loadContentForDirectoryByIndex(index);
   }
 
-  onRightClick(event, file: FileDTO): boolean {
+  onRightClick(event, selectedItem: any): boolean {
     const top = event.pageY;
     const left = event.pageX;
     this.contextMenu.nativeElement.setAttribute('style', 'display: block; top: ' + top + 'px; left: ' + left + 'px;');
     this.renderer.addClass(this.contextMenu.nativeElement, 'show');
-    this.selectedFiles.push(file);
-
+    this.selectionService.addToSelection(selectedItem);
     return false;
   }
 
-  closeContextMenu() {
+  closeContextMenu(): void {
     this.renderer.removeClass(this.contextMenu.nativeElement, 'show');
     this.contextMenu.nativeElement.removeAttribute('style');
-    this.selectedFiles = [];
+    this.selectionService.cleanSelection();
   }
 
-  downloadFile(): void {
-    this.fileService.downloadFile(this.selectedFiles[0]).subscribe(response => {
-      console.log(response);
-      const binaryData = [];
-      binaryData.push(response.data);
-      const url = window.URL.createObjectURL(new Blob(binaryData));
-      const a = document.createElement('a');
-      document.body.appendChild(a);
-      a.setAttribute('style', 'display: none');
-      a.setAttribute('target', 'blank');
-      a.href = url;
-      a.download = response.filename;
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
+  download(): void {
+    let request;
+    if (this.selectionService.hasSelectedItems()) {
+      if (this.selectionService.isMultipleSelection()) {
+      } else {
+        if (this.selectionService.hasSelectedDirectory()) {
+        } else {
+          request = this.fileService.downloadFile(this.selectionService.getSelectedFile());
+        }
+      }
+    }
 
-    }, error => {
+    if (request !== undefined) {
+      console.log('Execute download request');
+      request.subscribe(response => {
+        console.log(response);
+        const binaryData = [];
+        binaryData.push(response.data);
+        const url = window.URL.createObjectURL(new Blob(binaryData));
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.setAttribute('target', 'blank');
+        a.href = url;
+        a.download = response.filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
 
-      console.log(error);
-    });
+      }, error => {
 
-    this.closeContextMenu();
+        console.log(error);
+      });
+      this.closeContextMenu();
+    }
   }
 
-  deleteFile() {
-    this.fileService.deleteFile(this.selectedFiles[0])
-      .subscribe(value => this.contentManager.reloadContent());
-    this.closeContextMenu();
+  delete(): void {
+    let request;
+    if (this.selectionService.hasSelectedItems()) {
+      if (this.selectionService.isMultipleSelection()) {
+      } else {
+        if (this.selectionService.hasSelectedDirectory()) {
+          request = this.directoryService.deleteDirectory(this.selectionService.getSelectedDirectory().id);
+        } else {
+          request = this.fileService.deleteFile(this.selectionService.getSelectedFile());
+        }
+      }
+    }
+
+    if (request !== undefined) {
+      console.log('Execute delete request');
+      request.subscribe(() => this.contentManager.reloadContent());
+      this.closeContextMenu();
+    }
   }
 }

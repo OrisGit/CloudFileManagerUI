@@ -99,7 +99,7 @@
 
             <!-- Folder -->
             <div id="{{directory.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1" (click)="openDirectory(directory)"
-                 *ngFor="let directory of this.contentManager.content.directories" (contextmenu)="onRightClick($event)">
+                 *ngFor="let directory of this.contentManager.content.directories" (contextmenu)="onRightClick($event, directory)">
 
               <!-- Icon -->
               <div style="font-size: 5em;">
@@ -157,8 +157,9 @@
 <app-create-folder-dialog></app-create-folder-dialog>
 
 <div class="dropdown-menu dropdown-menu-sm" #contextMenu>
-  <a class="dropdown-item" (click)="downloadFile()">Download</a>
-  <a class="dropdown-item" (click)="deleteFile()">Remove</a>
+  <a class="dropdown-item" (click)="download()">Download</a>
+  <a class="dropdown-item" (click)="delete()">Remove</a>
   <a class="dropdown-item" href="#">Copy</a>
   <a class="dropdown-item" href="#">Move</a>
+  <a class="dropdown-item" href="#">Rename</a>
 </div>
