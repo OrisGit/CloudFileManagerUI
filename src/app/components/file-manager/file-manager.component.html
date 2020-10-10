@@ -122,7 +122,7 @@
 
             <!-- File -->
             <div id="{{file.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1"
-                 *ngFor="let file of this.contentManager.content.files" (contextmenu)="onRightClick($event)">
+                 *ngFor="let file of this.contentManager.content.files" (contextmenu)="onRightClick($event, file)">
 
               <!-- Icon -->
               <div style="font-size: 5em;">
@@ -157,7 +157,7 @@
 <app-create-folder-dialog></app-create-folder-dialog>
 
 <div class="dropdown-menu dropdown-menu-sm" #contextMenu>
-  <a class="dropdown-item" href="#">Download</a>
+  <a class="dropdown-item" (click)="downloadFile()">Download</a>
   <a class="dropdown-item" href="#">Remove</a>
   <a class="dropdown-item" href="#">Copy</a>
   <a class="dropdown-item" href="#">Move</a>

@@ -1,7 +1,7 @@
 import {Directory} from './directory';
-import {File} from './file';
+import {FileDTO} from './fileDTO';
 
 export class DirectoryContent {
   directories: Directory[] = [];
-  files: File[] = [];
+  files: FileDTO[] = [];
 }

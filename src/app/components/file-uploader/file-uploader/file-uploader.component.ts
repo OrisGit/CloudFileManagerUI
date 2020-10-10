@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {File} from '../../../model/file';
+import {FileDTO} from '../../../model/fileDTO';
 import {FileUploaderService} from '../../../service/file-uploader.service';
 import {SelectedFile} from '../../../model/selected-file';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
@@ -34,7 +34,7 @@ export class FileUploaderComponent implements OnInit {
     if (event.target.files.length > 0) {
       console.log('File selected: ' + event.target.files[0].name);
 
-      const file = new File();
+      const file = new FileDTO();
       const nameAndExtension = event.target.files[0].name.split('.', 2);
       file.name = nameAndExtension[0];
       if (nameAndExtension.length > 1) {

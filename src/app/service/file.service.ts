@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AppConstants} from '../app-constants';
 import {HttpClient, HttpEvent, HttpParams, HttpRequest} from '@angular/common/http';
+import {map} from 'rxjs/operators';
+import {FileDTO} from '../model/fileDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +29,20 @@ export class FileService {
     });
 
     return this.http.request(req);
+  }
+
+  downloadFile(file: FileDTO): Observable<any> {
+    console.log('Execute request downloadFile');
+    const params = new HttpParams()
+      .set('parentDirectoryId', file.parentDirectoryId)
+      .set('fileId', file.id);
+
+    return this.http.get(AppConstants.FILE_API_V1, {responseType: 'blob', params: params})
+      .pipe(map((response) => {
+        return {
+          filename: file.name + '.' + file.extension,
+          data: response
+        };
+      }));
   }
 }

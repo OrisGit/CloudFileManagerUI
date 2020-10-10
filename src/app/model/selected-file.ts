@@ -1,6 +1,6 @@
-import {File} from './file';
+import {FileDTO} from './fileDTO';
 
 export class SelectedFile {
   progress: number;
-  file: File;
+  file: FileDTO;
 }
