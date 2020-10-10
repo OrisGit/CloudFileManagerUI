@@ -33,16 +33,19 @@ export class FileService {
 
   downloadFile(file: FileDTO): Observable<any> {
     console.log('Execute request downloadFile');
-    const params = new HttpParams()
-      .set('parentDirectoryId', file.parentDirectoryId)
-      .set('fileId', file.id);
 
-    return this.http.get(AppConstants.FILE_API_V1, {responseType: 'blob', params: params})
+    return this.http.get(AppConstants.FILE_API_V1 + '/' + file.id, {responseType: 'blob'})
       .pipe(map((response) => {
         return {
           filename: file.name + '.' + file.extension,
           data: response
         };
       }));
+  }
+
+  deleteFile(file: FileDTO): Observable<any> {
+    console.log('Execute request downloadFile');
+
+    return this.http.delete(AppConstants.FILE_API_V1 + '/' + file.id, {});
   }
 }

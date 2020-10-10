@@ -92,4 +92,10 @@ export class FileManagerComponent implements OnInit {
 
     this.closeContextMenu();
   }
+
+  deleteFile() {
+    this.fileService.deleteFile(this.selectedFiles[0])
+      .subscribe(value => this.contentManager.reloadContent());
+    this.closeContextMenu();
+  }
 }
