@@ -43,6 +43,10 @@ export class ContentManagerService {
       });
   }
 
+  reloadContent(): void {
+    this.loadContentForDirectoryByIndex(this.breadcrumbs.length - 1);
+  }
+
   createDirectory(name: string): Observable<Directory> {
     const currentDirectory = this.getCurrentDirectory();
     console.log('create: ' + name + ' in ' + JSON.stringify(currentDirectory));
@@ -65,7 +69,7 @@ export class ContentManagerService {
       );
   }
 
-  private getCurrentDirectory(): Directory {
+  public getCurrentDirectory(): Directory {
     if (this.breadcrumbs.length === 0) {
       return null;
     } else {
