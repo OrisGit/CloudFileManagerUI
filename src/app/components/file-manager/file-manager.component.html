@@ -1,5 +1,4 @@
-<div class="container-fluid pb-10" style="min-height: 85%; width: 90%;">
-
+<div class="container-fluid pb-10" (click)="closeContextMenu()" style="min-height: 85%; width: 90%;">
 
   <div class="row" style="min-height: 100%;">
     <div [class.col-9] = "this.fileUploaderIsOpen"  [class.col-12] = "!this.fileUploaderIsOpen" style="min-height: 100%;">
@@ -8,7 +7,7 @@
       <div class="container-fluid bg-white rounded shadow-sm" style="margin-bottom: 10px; padding-bottom: 15px; padding-right: 0; padding-left: 0;">
 
         <!--- Header -->
-        <div class="container-fluid border-bottom border-gray" style="padding: 0">
+        <div class="container-fluid border-bottom border-gray" style="padding: 0" id="tid">
           <div class="row" style="padding: 0">
 
             <!-- Back button -->
@@ -100,7 +99,7 @@
 
             <!-- Folder -->
             <div id="{{directory.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1" (click)="openDirectory(directory)"
-                 *ngFor="let directory of this.contentManager.content.directories">
+                 *ngFor="let directory of this.contentManager.content.directories" (contextmenu)="onRightClick($event)">
 
               <!-- Icon -->
               <div style="font-size: 5em;">
@@ -121,9 +120,9 @@
 
             </div>
 
-            <!-- Folder -->
+            <!-- File -->
             <div id="{{file.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1"
-                 *ngFor="let file of this.contentManager.content.files">
+                 *ngFor="let file of this.contentManager.content.files" (contextmenu)="onRightClick($event)">
 
               <!-- Icon -->
               <div style="font-size: 5em;">
@@ -156,3 +155,10 @@
 </div>
 
 <app-create-folder-dialog></app-create-folder-dialog>
+
+<div class="dropdown-menu dropdown-menu-sm" #contextMenu>
+  <a class="dropdown-item" href="#">Download</a>
+  <a class="dropdown-item" href="#">Remove</a>
+  <a class="dropdown-item" href="#">Copy</a>
+  <a class="dropdown-item" href="#">Move</a>
+</div>
