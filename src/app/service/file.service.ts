@@ -42,4 +42,9 @@ export class FileService {
         };
       }));
   }
+
+  renameFile(file: FileDTO, newName: string): Observable<any> {
+    file.name = newName;
+    return this.http.put(AppConstants.FILE_API_V1, file);
+  }
 }

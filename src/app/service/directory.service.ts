@@ -26,9 +26,9 @@ export class DirectoryService {
     return this.http.post<Directory>(url, {name});
   }
 
-  updateDirectoryName(directoryId: string, newName: string): Observable<Directory> {
-    const url = this.createPath(directoryId);
-    return this.http.put<Directory>(url, {name: newName});
+  updateDirectoryName(directory: Directory, newName: string): Observable<any> {
+    directory.name = newName;
+    return this.http.put(AppConstants.DIRECTORY_TREE_API_V1, directory);
   }
 
   private createPath(directoryId: string): string {
