@@ -5,4 +5,5 @@ export class AppConstants {
   public static STORAGE_API_V1 = AppConstants.HOST + AppConstants.API_V1 + '/storage';
   public static DIRECTORY_TREE_API_V1 = AppConstants.STORAGE_API_V1 + '/directory';
   public static FILE_API_V1 = AppConstants.STORAGE_API_V1 + '/file';
+  public static OPERATIONS_API_V1 = AppConstants.STORAGE_API_V1 + '/operations';
 }

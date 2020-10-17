@@ -42,10 +42,4 @@ export class FileService {
         };
       }));
   }
-
-  deleteFile(file: FileDTO): Observable<any> {
-    console.log('Execute request downloadFile');
-
-    return this.http.delete(AppConstants.FILE_API_V1 + '/' + file.id, {});
-  }
 }

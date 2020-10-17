@@ -1,4 +1,4 @@
-<div class="container-fluid pb-10" (click)="closeContextMenu()" style="min-height: 85%; width: 90%;">
+<div class="container-fluid pb-10" (click)="onCloseContextMenu()" style="min-height: 85%; width: 90%;">
 
   <div class="row" style="min-height: 100%;">
     <div [class.col-9] = "this.fileUploaderIsOpen"  [class.col-12] = "!this.fileUploaderIsOpen" style="min-height: 100%;">
@@ -94,7 +94,7 @@
         </div>
 
         <!--- Folders area -->
-        <div class="container-fluid">
+        <div class="container-fluid" (contextmenu)="onRightClick($event)">
           <div class="row m-auto">
 
             <!-- Folder -->
@@ -156,10 +156,15 @@
 
 <app-create-folder-dialog></app-create-folder-dialog>
 
-<div class="dropdown-menu dropdown-menu-sm" #contextMenu>
+<div class="dropdown-menu dropdown-menu-sm" #fileContextMenu>
   <a class="dropdown-item" (click)="download()">Download</a>
   <a class="dropdown-item" (click)="delete()">Remove</a>
-  <a class="dropdown-item" href="#">Copy</a>
-  <a class="dropdown-item" href="#">Move</a>
+  <a class="dropdown-item" (click)="copy()">Copy</a>
+  <a class="dropdown-item" (click)="cut()">Cut</a>
   <a class="dropdown-item" href="#">Rename</a>
+</div>
+
+<div class="dropdown-menu dropdown-menu-sm" #areaContextMenu>
+  <a class="dropdown-item" (click)="paste()" [hidden]="!bufferHasElements()">Paste</a>
+  <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">Create new folder</a>
 </div>

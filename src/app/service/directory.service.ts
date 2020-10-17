@@ -26,11 +26,6 @@ export class DirectoryService {
     return this.http.post<Directory>(url, {name});
   }
 
-  deleteDirectory(directoryId: string): Observable<any> {
-    const url = this.createPath(directoryId);
-    return this.http.delete(url, {});
-  }
-
   updateDirectoryName(directoryId: string, newName: string): Observable<Directory> {
     const url = this.createPath(directoryId);
     return this.http.put<Directory>(url, {name: newName});
