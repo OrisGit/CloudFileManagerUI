@@ -1,11 +1,10 @@
-import {FileDTO} from './fileDTO';
-import {Directory} from './directory';
-
 export class FileManagerItem {
-  constructor(item: FileDTO | Directory) {
+  constructor(item: any, isDirectory: boolean) {
     this.description = item;
+    this.isDirectory = isDirectory;
   }
 
-  description: FileDTO | Directory;
+  description: any;
   isSelected = false;
+  isDirectory;
 }

@@ -4,10 +4,10 @@ import {SessionService} from '../../service/session.service';
 import {Directory} from '../../model/directory';
 import {ContentManagerService} from '../../service/content-manager.service';
 import {FileService} from '../../service/file.service';
-import {FileDTO} from '../../model/fileDTO';
 import {SelectionService} from '../../service/selection.service';
 import {DirectoryService} from '../../service/directory.service';
 import {OperationsService} from '../../service/operations.service';
+import {FileManagerItem} from '../../model/file-manager-item';
 
 @Component({
   selector: 'app-file-manager',
@@ -23,10 +23,12 @@ export class FileManagerComponent implements OnInit {
   areaContextMenu: ElementRef;
 
   fileUploaderIsOpen = false;
+  selectionModeOn = false;
 
   isCopy: boolean;
-  filesToCopy: FileDTO[] = [];
-  directoriesToCopy: Directory[] = [];
+  filesToCopy: FileManagerItem[] = [];
+  directoriesToCopy: FileManagerItem[] = [];
+  clickedItem: FileManagerItem;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,21 +48,20 @@ export class FileManagerComponent implements OnInit {
 
   openDirectory(directory: Directory): void {
     console.log(directory.id);
+    this.toDisableSelectionMode();
     this.contentManager.loadContentFor(directory);
   }
 
   openPreviousDirectory(): void {
+    this.toDisableSelectionMode();
     this.contentManager.loadContentForPreviousDirectory();
   }
 
   ngOnInit(): void {
   }
 
-  upload(files: any): void {
-    console.log('files to upload ' + JSON.stringify(files));
-  }
-
   openDirectoryByIndex(index: number): void {
+    this.toDisableSelectionMode();
     this.contentManager.loadContentForDirectoryByIndex(index);
   }
 
@@ -74,21 +75,31 @@ export class FileManagerComponent implements OnInit {
     }
   }
 
-  onRightClickOnFile(event, selectedItem: any): boolean {
+  onRightClickOnFile(event, selectedItem: FileManagerItem): boolean {
     this.showContextMenu(event, this.fileContextMenu);
-    this.selectionService.addToSelection(selectedItem);
+    selectedItem.isSelected = true;
+    this.clickedItem = selectedItem;
     return false;
   }
 
   onRightClickOnArea(event: any): boolean {
-    this.showContextMenu(event, this.areaContextMenu);
+    if (!this.selectionModeOn) {
+      this.showContextMenu(event, this.areaContextMenu);
+    }
+
     return false;
   }
 
   onCloseContextMenu(): void {
     this.hideContextMenu(this.areaContextMenu);
     this.hideContextMenu(this.fileContextMenu);
-    this.selectionService.cleanSelection();
+    if(this.clickedItem !== undefined) {
+      this.clickedItem.isSelected = false;
+      this.clickedItem = undefined;
+    }
+    if (!this.selectionModeOn) {
+      this.selectionService.cleanSelection();
+    }
   }
 
   private hideContextMenu(contextMenu: ElementRef): void {
@@ -104,6 +115,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   download(): void {
+    this.selectionService.select(this.clickedItem);
     let request;
     if (this.selectionService.hasSelectedItems()) {
       if (this.selectionService.isMultipleSelection()) {
@@ -138,28 +150,35 @@ export class FileManagerComponent implements OnInit {
       });
       this.onCloseContextMenu();
     }
+    this.toDisableSelectionMode();
   }
 
   delete(): void {
+    this.selectionService.select(this.clickedItem);
     if (this.selectionService.hasSelectedItems()) {
       console.log('Execute delete request');
-      this.operationsService.deleteOperation(this.selectionService.selectedFiles.map(value => value.id),
-        this.selectionService.selectedDirectories.map(value => value.id))
+      this.operationsService.deleteOperation(this.selectionService.selectedFiles.map(value => value.description.id),
+        this.selectionService.selectedDirectories.map(value => value.description.id))
         .subscribe(() => this.contentManager.reloadContent());
     }
     this.onCloseContextMenu();
+    this.toDisableSelectionMode();
   }
 
   copy(): void {
+    this.selectionService.select(this.clickedItem);
     this.isCopy = true;
     this.addSelectedToBuffer();
     this.onCloseContextMenu();
+    this.toDisableSelectionMode();
   }
 
   cut(): void {
+    this.selectionService.select(this.clickedItem);
     this.isCopy = false;
     this.addSelectedToBuffer();
     this.onCloseContextMenu();
+    this.toDisableSelectionMode();
   }
 
   addSelectedToBuffer(): void {
@@ -171,13 +190,13 @@ export class FileManagerComponent implements OnInit {
     if (this.bufferHasElements()) {
       if (this.isCopy) {
         console.log('Execute copy request');
-        this.operationsService.copyOperation(this.filesToCopy.map(value => value.id),
-          this.directoriesToCopy.map(value => value.id), this.contentManager.getCurrentDirectory().id)
+        this.operationsService.copyOperation(this.filesToCopy.map(value => value.description.id),
+          this.directoriesToCopy.map(value => value.description.id), this.contentManager.getCurrentDirectory().id)
           .subscribe(() => this.contentManager.reloadContent());
       } else {
         console.log('Execute copy request');
-        this.operationsService.moveOperation(this.filesToCopy.map(value => value.id),
-          this.directoriesToCopy.map(value => value.id), this.contentManager.getCurrentDirectory().id)
+        this.operationsService.moveOperation(this.filesToCopy.map(value => value.description.id),
+          this.directoriesToCopy.map(value => value.description.id), this.contentManager.getCurrentDirectory().id)
           .subscribe(() => this.contentManager.reloadContent());
       }
     }
@@ -186,5 +205,54 @@ export class FileManagerComponent implements OnInit {
 
   bufferHasElements(): boolean {
     return this.filesToCopy.length > 0 || this.directoriesToCopy.length > 0;
+  }
+
+  itemOnClick(item: FileManagerItem): void {
+    if (this.selectionModeOn) {
+      if (item.isSelected) {
+        this.selectionService.unselect(item);
+      } else {
+        this.selectionService.select(item);
+      }
+    } else if (item.isDirectory) {
+      this.openDirectory(item.description);
+    }
+  }
+
+  toggleSelectionMode(): void {
+    if (this.selectionModeOn) {
+      this.toDisableSelectionMode();
+    } else {
+      this.toEnableSelectionMode();
+    }
+  }
+
+  selectAll(): void {
+    this.toEnableSelectionMode();
+    this.selectionService.cleanSelection();
+    this.contentManager.directories.forEach(value => this.selectionService.select(value));
+    this.contentManager.files.forEach(value => this.selectionService.select(value));
+  }
+
+  toEnableSelectionMode(): void {
+    this.selectionModeOn = true;
+    this.fileUploaderIsOpen = false;
+  }
+
+  toDisableSelectionMode(): void {
+    this.selectionModeOn = false;
+    this.selectionService.cleanSelection();
+  }
+
+  openCreateFolderDialog() {
+      if(!this.selectionModeOn) {
+
+      }
+  }
+
+  openFileUploader(): void {
+    if(!this.selectionModeOn) {
+      this.fileUploaderIsOpen = !this.fileUploaderIsOpen;
+    }
   }
 }

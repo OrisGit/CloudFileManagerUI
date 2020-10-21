@@ -60,8 +60,8 @@ export class ContentManagerService {
     return this.directoryService.getDirectoryContent(directory.id)
       .pipe(
         tap(value => {
-          this.files = value.files.map(file => new FileManagerItem(file));
-          this.directories = value.directories.map(dir => new FileManagerItem(dir));
+          this.files = value.files.map(file => new FileManagerItem(file, false));
+          this.directories = value.directories.map(dir => new FileManagerItem(dir, true));
           console.log('loaded content: ' + JSON.stringify(value));
         })
       );

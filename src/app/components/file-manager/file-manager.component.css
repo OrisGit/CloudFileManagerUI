@@ -9,6 +9,10 @@
   fill: black;
 }
 
+.disabled-control {
+  fill: lightgray;
+}
+
 .breadcrumb-link {
   transition: color .6s ease;
   color: #4682B4;
