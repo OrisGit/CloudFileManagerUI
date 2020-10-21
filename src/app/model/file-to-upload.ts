@@ -1,6 +1,6 @@
 import {FileDTO} from './fileDTO';
 
-export class SelectedFile {
+export class FileToUpload {
   progress: number;
   file: FileDTO;
 }

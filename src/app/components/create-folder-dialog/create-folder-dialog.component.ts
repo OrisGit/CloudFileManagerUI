@@ -19,7 +19,7 @@ export class CreateFolderDialogComponent implements OnInit {
 
   createDirectory(folderName: string): void {
     this.contentManager.createDirectory(folderName)
-      .subscribe();
+      .subscribe( () => this.contentManager.reloadContent());
     this.folderName = '';
   }
 }

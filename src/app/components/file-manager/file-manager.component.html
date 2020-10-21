@@ -98,12 +98,15 @@
           <div class="row m-auto">
 
             <!-- Folder -->
-            <div id="{{directory.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1" (click)="openDirectory(directory)"
-                 *ngFor="let directory of this.contentManager.content.directories" (contextmenu)="onRightClick($event, directory)">
+            <div id="{{directory.description.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1" (click)="openDirectory(directory.description)"
+                 *ngFor="let directory of this.contentManager.directories" (contextmenu)="onRightClick($event, directory)">
 
               <!-- Icon -->
               <div style="font-size: 5em;">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-folder card-img-top custom-navigation"
+                     [ngClass]="{
+                     'selected-item': directory.isSelected
+                     }"
                      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z"/>
@@ -114,15 +117,15 @@
 
               <!-- Name -->
               <div style="text-align: center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis"
-                   title="{{directory.name}}">
-                {{directory.name}}
+                   title="{{directory.description.name}}">
+                {{directory.description.name}}
               </div>
 
             </div>
 
             <!-- File -->
-            <div id="{{file.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1"
-                 *ngFor="let file of this.contentManager.content.files" (contextmenu)="onRightClick($event, file)">
+            <div id="{{file.description.id}}" class="col-4 col-sm-3 col-md-2 col-xl-1"
+                 *ngFor="let file of this.contentManager.files" (contextmenu)="onRightClick($event, file)">
 
               <!-- Icon -->
               <div style="font-size: 5em;">
@@ -134,8 +137,8 @@
 
               <!-- Name -->
               <div style="text-align: center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis"
-                   title="{{file.name+'.'+file.extension}}">
-                {{file.name+'.'+file.extension}}
+                   title="{{file.description.name+'.'+file.description.extension}}">
+                {{file.description.name+'.'+file.description.extension}}
               </div>
 
             </div>

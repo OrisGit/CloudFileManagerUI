@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FileDTO} from '../../../model/fileDTO';
 import {FileUploaderService} from '../../../service/file-uploader.service';
-import {SelectedFile} from '../../../model/selected-file';
+import {FileToUpload} from '../../../model/file-to-upload';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {ContentManagerService} from '../../../service/content-manager.service';
 
@@ -12,7 +12,7 @@ import {ContentManagerService} from '../../../service/content-manager.service';
 })
 export class FileUploaderComponent implements OnInit {
 
-  selectedFiles: SelectedFile[] = [];
+  selectedFiles: FileToUpload[] = [];
 
   constructor(
     private fileUploader: FileUploaderService,
@@ -42,15 +42,15 @@ export class FileUploaderComponent implements OnInit {
       }
       file.size = event.target.files[0].size;
 
-      const selectedFile = new SelectedFile();
-      selectedFile.file = file;
-      selectedFile.progress = 0;
+      const fileToUpload = new FileToUpload();
+      fileToUpload.file = file;
+      fileToUpload.progress = 0;
 
-      this.selectedFiles.push(selectedFile);
+      this.selectedFiles.push(fileToUpload);
 
       this.fileUploader.uploadFile(event.target.files[0]).subscribe(event => {
         if (event.type === HttpEventType.UploadProgress) {
-          selectedFile.progress = Math.round(100 * event.loaded / event.total);
+          fileToUpload.progress = Math.round(100 * event.loaded / event.total);
         } else if (event instanceof HttpResponse) {
           console.log('File is completely uploaded!');
           this.contentManager.reloadContent();

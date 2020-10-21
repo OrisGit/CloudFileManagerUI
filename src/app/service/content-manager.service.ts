@@ -5,13 +5,15 @@ import {Directory} from '../model/directory';
 import {tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {SessionService} from './session.service';
+import {FileManagerItem} from '../model/file-manager-item';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContentManagerService {
 
-  content: DirectoryContent = new DirectoryContent();
+  directories: FileManagerItem[] = [];
+  files: FileManagerItem[] = [];
   breadcrumbs: Directory[] = [];
 
 
@@ -50,12 +52,7 @@ export class ContentManagerService {
   createDirectory(name: string): Observable<Directory> {
     const currentDirectory = this.getCurrentDirectory();
     console.log('create: ' + name + ' in ' + JSON.stringify(currentDirectory));
-    return this.directoryService.createDirectory(currentDirectory.id, name)
-      .pipe(
-        tap(value => {
-          this.content.directories.push(value);
-        })
-      );
+    return this.directoryService.createDirectory(currentDirectory.id, name);
   }
 
   private loadContent(directory: Directory): Observable<DirectoryContent> {
@@ -63,7 +60,8 @@ export class ContentManagerService {
     return this.directoryService.getDirectoryContent(directory.id)
       .pipe(
         tap(value => {
-          this.content = value;
+          this.files = value.files.map(file => new FileManagerItem(file));
+          this.directories = value.directories.map(dir => new FileManagerItem(dir));
           console.log('loaded content: ' + JSON.stringify(value));
         })
       );

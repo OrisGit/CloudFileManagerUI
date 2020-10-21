@@ -42,3 +42,7 @@
 .dropdown-item {
   cursor: pointer;
 }
+
+.selected-item {
+  fill: #4682B4;
+}
