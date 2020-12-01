@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Directory} from '../model/directory';
 import {AppConstants} from '../app-constants';
 import {Observable} from 'rxjs';
@@ -22,13 +22,14 @@ export class DirectoryService {
   }
 
   createDirectory(parentId: string, name: string): Observable<Directory> {
-    const url = this.createPath(parentId);
-    return this.http.post<Directory>(url, {name});
+    const params = new HttpParams().set('parentId', parentId);
+    return this.http.post<Directory>(AppConstants.DIRECTORY_TREE_API_V1, {name}, {params:params});
   }
 
   updateDirectoryName(directory: Directory, newName: string): Observable<any> {
+    const url = this.createPath(directory.id);
     directory.name = newName;
-    return this.http.put(AppConstants.DIRECTORY_TREE_API_V1, directory);
+    return this.http.put(url, directory);
   }
 
   private createPath(directoryId: string): string {
