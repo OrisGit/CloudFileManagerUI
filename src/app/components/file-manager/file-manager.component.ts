@@ -9,6 +9,7 @@ import {DirectoryService} from '../../service/directory.service';
 import {OperationsService} from '../../service/operations.service';
 import {FileManagerItem} from '../../model/file-manager-item';
 import {DialogsService} from '../../service/dialogs.service';
+import {NotificationService} from '../../service/notification.service';
 
 @Component({
   selector: 'app-file-manager',

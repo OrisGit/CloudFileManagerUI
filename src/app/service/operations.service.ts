@@ -7,6 +7,7 @@ import {AppConstants} from '../app-constants';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {SpinnerOverlayService} from './spinner-overlay.service';
 import {catchError, tap} from 'rxjs/operators';
+import {NotificationService} from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class OperationsService {
 
   constructor(
     private http: HttpClient,
-    private spinner: SpinnerOverlayService
+    private spinner: SpinnerOverlayService,
+    private notification: NotificationService
   ) {
   }
 
@@ -25,7 +27,11 @@ export class OperationsService {
     console.log('Delete operation for: ' + JSON.stringify(operands));
     return this.http.post(AppConstants.OPERATIONS_API_V1 + '/remove', operands, {responseType: 'text'})
       .pipe(tap(x => this.spinner.hide()))
-      .pipe(catchError(() => {this.spinner.hide(); return throwError(''); }));
+      .pipe(catchError(error => {
+        this.spinner.hide();
+        this.notification.showError(error.error.message, 'Failed to delete content');
+        return throwError('');
+      }));
   }
 
   copyOperation(filesIds: string[], directoriesIds: string[], targetDirectoryId: string): Observable<string> {
@@ -37,7 +43,11 @@ export class OperationsService {
       responseType: 'text',
       params: params
     }).pipe(tap(x => this.spinner.hide()))
-      .pipe(catchError(() => {this.spinner.hide(); return throwError(''); }));
+      .pipe(catchError(error => {
+        this.spinner.hide();
+        this.notification.showError(error.error.message, 'Failed to copy content');
+        return throwError('');
+      }));
   }
 
   moveOperation(filesIds: string[], directoriesIds: string[], targetDirectoryId: string): Observable<string> {
@@ -49,6 +59,10 @@ export class OperationsService {
       responseType: 'text',
       params: params
     }).pipe(tap(x => this.spinner.hide()))
-      .pipe(catchError(() => {this.spinner.hide(); return throwError(''); }));
+      .pipe(catchError(error => {
+        this.spinner.hide();
+        this.notification.showError(error.error.message, 'Failed to move content');
+        return throwError('');
+      }));
   }
 }

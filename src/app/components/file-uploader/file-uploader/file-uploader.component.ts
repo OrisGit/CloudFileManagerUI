@@ -4,6 +4,7 @@ import {FileUploaderService} from '../../../service/file-uploader.service';
 import {FileToUpload} from '../../../model/file-to-upload';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {ContentManagerService} from '../../../service/content-manager.service';
+import {NotificationService} from '../../../service/notification.service';
 
 @Component({
   selector: 'app-file-uploader',
@@ -16,7 +17,8 @@ export class FileUploaderComponent implements OnInit {
 
   constructor(
     private fileUploader: FileUploaderService,
-    private contentManager: ContentManagerService
+    private contentManager: ContentManagerService,
+    private notification: NotificationService
   ) {
   }
 
@@ -53,6 +55,7 @@ export class FileUploaderComponent implements OnInit {
           fileToUpload.progress = Math.round(100 * event.loaded / event.total);
         } else if (event instanceof HttpResponse) {
           console.log('File is completely uploaded!');
+          this.notification.showSuccess('File ' + fileToUpload.file.name + '.' + fileToUpload.file.extension + ' is completely uploaded!', 'File uploading status');
           this.contentManager.reloadContent();
         }
       });

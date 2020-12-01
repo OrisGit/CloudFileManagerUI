@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {AppConstants} from '../app-constants';
 import {HttpClient, HttpEvent, HttpParams, HttpRequest} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {FileDTO} from '../model/fileDTO';
+import {NotificationService} from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ import {FileDTO} from '../model/fileDTO';
 export class FileService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private notification: NotificationService
   ) {
   }
 
@@ -28,7 +30,11 @@ export class FileService {
       responseType: 'text'
     });
 
-    return this.http.request(req);
+    return this.http.request(req)
+      .pipe(catchError(error => {
+        this.notification.showError(error.error.message, 'Failed to upload file');
+        return throwError('');
+      }));
   }
 
   downloadFile(file: FileDTO): Observable<any> {
@@ -40,11 +46,19 @@ export class FileService {
           filename: file.name + '.' + file.extension,
           data: response
         };
+      }))
+      .pipe(catchError(error => {
+        this.notification.showError(error.error.message, 'Failed to download file');
+        return throwError('');
       }));
   }
 
   renameFile(file: FileDTO, newName: string): Observable<any> {
     file.name = newName;
-    return this.http.put(AppConstants.FILE_API_V1 + '/' + file.id, file);
+    return this.http.put(AppConstants.FILE_API_V1 + '/' + file.id, file)
+      .pipe(catchError(error => {
+        this.notification.showError(error.error.message, 'Failed to rename file');
+        return throwError('');
+      }));
   }
 }

@@ -16,6 +16,8 @@ import { FileUploaderComponent } from './components/file-uploader/file-uploader/
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerOverlayComponent } from './components/spinner-overlay/spinner-overlay.component';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 
 const appRoutes: Routes = [
@@ -44,7 +46,13 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
-    OverlayModule
+    OverlayModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      newestOnTop: true
+    })
   ],
   entryComponents: [
     SpinnerOverlayComponent
