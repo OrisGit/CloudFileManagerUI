@@ -13,6 +13,9 @@ import { LogoutComponent } from './components/logout/logout.component';
 import {HttpInterceptorService} from './service/http-interceptor.service';
 import { FileManagerComponent } from './components/file-manager/file-manager.component';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader/file-uploader.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SpinnerOverlayComponent } from './components/spinner-overlay/spinner-overlay.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 
 const appRoutes: Routes = [
@@ -32,13 +35,19 @@ const appRoutes: Routes = [
     PageNotFoundComponent,
     LogoutComponent,
     FileManagerComponent,
-    FileUploaderComponent
+    FileUploaderComponent,
+    SpinnerComponent,
+    SpinnerOverlayComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    OverlayModule
+  ],
+  entryComponents: [
+    SpinnerOverlayComponent
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
