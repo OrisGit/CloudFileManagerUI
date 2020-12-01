@@ -68,7 +68,7 @@
               </svg>
 
               <!-- Create new folder action -->
-              <svg (click)="openCreateFolderDialog()" data-toggle="modal" data-target="#exampleModal" width="1em" height="1em" viewBox="0 0 16 16"
+              <svg (click)="dialogs.openModal(createFolderModal)" data-toggle="modal" data-target="#exampleModal" width="1em" height="1em" viewBox="0 0 16 16"
                    [ngClass]="{'disabled-control':selectionModeOn}"
                    class="bi bi-plus-square custom-navigation ml-3" fill="currentColor"
                    xmlns="http://www.w3.org/2000/svg">
@@ -179,17 +179,70 @@
 
 </div>
 
-<app-create-folder-dialog></app-create-folder-dialog>
-
 <div class="dropdown-menu dropdown-menu-sm" #fileContextMenu>
   <a class="dropdown-item" (click)="download()">Download</a>
-  <a class="dropdown-item" (click)="delete()">Remove</a>
+  <a class="dropdown-item" (click)="dialogs.openModal(deleteModal); hideContextMenu(this.fileContextMenuRef)">Remove</a>
   <a class="dropdown-item" (click)="copy()">Copy</a>
   <a class="dropdown-item" (click)="cut()">Cut</a>
-  <a class="dropdown-item" href="#">Rename</a>
+  <a class="dropdown-item" (click)="dialogs.openModal(renameFolderModal); hideContextMenu(this.fileContextMenuRef)">Rename</a>
 </div>
 
 <div class="dropdown-menu dropdown-menu-sm" #areaContextMenu>
   <a class="dropdown-item" (click)="paste()" [hidden]="!bufferHasElements()">Paste</a>
-  <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">Create new folder</a>
+  <a class="dropdown-item" (click)="dialogs.openModal(createFolderModal); onCloseContextMenu()">Create new folder</a>
 </div>
+
+<ng-template #createFolderModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Create new folder</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="folder-name" class="col-form-label">Folder name:</label>
+        <input #folderNameInput tabindex="0" type="text" class="form-control" id="folder-name" name="f-name">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Close</button>
+    <button type="button" class="btn btn-primary" (click)="modal.dismiss('Save'); createDirectory(folderNameInput.value)">Create folder</button>
+  </div>
+</ng-template>
+
+<ng-template #renameFolderModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Rename folder</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); cleanSelection();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="folder-name-new-name" class="col-form-label">Folder name:</label>
+        <input #newFolderNameInput tabindex="0" type="text" class="form-control" id="folder-name-new-name" name="f-name" [value]="this.clickedItem?.description?.name">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click'); cleanSelection();">Close</button>
+    <button type="button" class="btn btn-primary" (click)="modal.dismiss('Save'); renameDirectory(newFolderNameInput.value)">Rename folder</button>
+  </div>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Do you really want to delete {{this.clickedItem?.description?.name}}?</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click'); cleanSelection();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click'); cleanSelection();">No</button>
+    <button type="button" class="btn btn-primary" (click)="modal.dismiss('Yes'); delete()">Yes</button>
+  </div>
+</ng-template>

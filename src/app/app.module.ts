@@ -12,7 +12,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LogoutComponent } from './components/logout/logout.component';
 import {HttpInterceptorService} from './service/http-interceptor.service';
 import { FileManagerComponent } from './components/file-manager/file-manager.component';
-import { CreateFolderDialogComponent } from './components/create-folder-dialog/create-folder-dialog.component';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader/file-uploader.component';
 
 
@@ -33,7 +32,6 @@ const appRoutes: Routes = [
     PageNotFoundComponent,
     LogoutComponent,
     FileManagerComponent,
-    CreateFolderDialogComponent,
     FileUploaderComponent
   ],
   imports: [

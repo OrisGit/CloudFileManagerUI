@@ -8,6 +8,7 @@ import {SelectionService} from '../../service/selection.service';
 import {DirectoryService} from '../../service/directory.service';
 import {OperationsService} from '../../service/operations.service';
 import {FileManagerItem} from '../../model/file-manager-item';
+import {DialogsService} from '../../service/dialogs.service';
 
 @Component({
   selector: 'app-file-manager',
@@ -17,7 +18,7 @@ import {FileManagerItem} from '../../model/file-manager-item';
 export class FileManagerComponent implements OnInit {
 
   @ViewChild('fileContextMenu', {static: false})
-  fileContextMenu: ElementRef;
+  fileContextMenuRef: ElementRef;
 
   @ViewChild('areaContextMenu', {static: false})
   areaContextMenu: ElementRef;
@@ -39,7 +40,8 @@ export class FileManagerComponent implements OnInit {
     private fileService: FileService,
     private selectionService: SelectionService,
     private directoryService: DirectoryService,
-    private operationsService: OperationsService
+    private operationsService: OperationsService,
+    public dialogs: DialogsService
   ) {
     if (!this.session.isLoggedIn) {
       this.router.navigate(['signin']);
@@ -67,7 +69,7 @@ export class FileManagerComponent implements OnInit {
 
   onRightClick(event, selectedItem?: any): boolean {
     if (event.target.classList.contains('row')) {
-      this.hideContextMenu(this.fileContextMenu);
+      this.hideContextMenu(this.fileContextMenuRef);
       return this.onRightClickOnArea(event);
     } else if (selectedItem !== undefined) {
       this.hideContextMenu(this.areaContextMenu);
@@ -76,7 +78,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   onRightClickOnFile(event, selectedItem: FileManagerItem): boolean {
-    this.showContextMenu(event, this.fileContextMenu);
+    this.showContextMenu(event, this.fileContextMenuRef);
     selectedItem.isSelected = true;
     this.clickedItem = selectedItem;
     return false;
@@ -92,7 +94,11 @@ export class FileManagerComponent implements OnInit {
 
   onCloseContextMenu(): void {
     this.hideContextMenu(this.areaContextMenu);
-    this.hideContextMenu(this.fileContextMenu);
+    this.hideContextMenu(this.fileContextMenuRef);
+    this.cleanSelection();
+  }
+
+  cleanSelection() {
     if(this.clickedItem !== undefined) {
       this.clickedItem.isSelected = false;
       this.clickedItem = undefined;
@@ -102,7 +108,7 @@ export class FileManagerComponent implements OnInit {
     }
   }
 
-  private hideContextMenu(contextMenu: ElementRef): void {
+  hideContextMenu(contextMenu: ElementRef): void {
     this.renderer.removeClass(contextMenu.nativeElement, 'show');
     contextMenu.nativeElement.removeAttribute('style');
   }
@@ -244,15 +250,21 @@ export class FileManagerComponent implements OnInit {
     this.selectionService.cleanSelection();
   }
 
-  openCreateFolderDialog() {
-      if(!this.selectionModeOn) {
-
-      }
-  }
-
   openFileUploader(): void {
     if(!this.selectionModeOn) {
       this.fileUploaderIsOpen = !this.fileUploaderIsOpen;
     }
+  }
+
+  renameDirectory(newName: string): void {
+    this.directoryService
+      .updateDirectoryName(this.clickedItem.description, newName)
+      .subscribe(() => this.contentManager.reloadContent());
+    this.onCloseContextMenu();
+  }
+
+  createDirectory(folderName: string): void {
+    this.contentManager.createDirectory(folderName)
+      .subscribe(() => this.contentManager.reloadContent());
   }
 }
