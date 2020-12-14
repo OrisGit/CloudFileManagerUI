@@ -1,12 +1,7 @@
 <header>
   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Cloud File Storage</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-      <a class="p-2 text-dark" href="#">Features</a>
-      <a class="p-2 text-dark" href="#">Enterprise</a>
-      <a class="p-2 text-dark" href="#">Support</a>
-      <a class="p-2 text-dark" href="#">Pricing</a>
-    </nav>
+    <img class="mr-2" src="assets/Фон.png" alt="" width="42" height="30">
+    <h5 class="my-0 mr-md-auto font-weight-normal"><a class="title" routerLink="/">Cloud File Storage</a></h5>
     <div [hidden]="session.isLoggedIn">
       <a class="btn btn-outline-success mr-md-3" routerLink="/signin" routerLinkActive="active">Sign in</a>
       <a class="btn btn-outline-primary" routerLink="/signup" routerLinkActive="active">Sign up</a>

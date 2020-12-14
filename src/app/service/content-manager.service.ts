@@ -101,7 +101,7 @@ export class ContentManagerService {
     this.removeToIndex(this.breadcrumbs.length - 2);
   }
 
-  private loadContentForRoot(): void {
+  public loadContentForRoot(): void {
     const root = new Directory();
     root.id = this.sessionService.getRootDirectoryId();
     root.name = 'root';
@@ -112,5 +112,11 @@ export class ContentManagerService {
     console.log('remove to index: ' + index);
 
     this.breadcrumbs.splice(index + 1, this.breadcrumbs.length - index - 1);
+  }
+
+  public clean(): void {
+    this.directories = [];
+    this.files = [];
+    this.breadcrumbs = [];
   }
 }

@@ -25,6 +25,7 @@ export class SessionService {
 
   endSession(): void {
     sessionStorage.removeItem(this.USER_KEY);
+    this.user = null;
     this.isLoggedIn = false;
   }
 
