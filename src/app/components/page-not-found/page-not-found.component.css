@@ -1,80 +1,85 @@
-svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -250px;
-  margin-left: -400px;
+.fundo{
+  animation: scales 3s alternate  infinite;
+  transform-origin: center;
 }
-.message-box {
-  height: 200px;
-  width: 380px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -100px;
-  margin-left: 50px;
-  color: #000;
-  font-weight: 300;
+.pao-baixo{
+  animation: rotatepao 14s cubic-bezier(.1,.49,.41,.97)  infinite;
+  transform-origin: center;
 }
-.message-box h1 {
-  font-size: 60px;
-  line-height: 46px;
-  margin-bottom: 40px;
+.pao-cima{
+  animation: rotatepao 7s 1s cubic-bezier(.1,.49,.41,.97)  infinite;
+  transform-origin: center;
 }
-.buttons-con .action-link-wrap {
-  margin-top: 40px;
-}
-.buttons-con .action-link-wrap a {
-  background: #68c950;
-  padding: 8px 25px;
-  border-radius: 4px;
-  color: #FFF;
-  font-weight: bold;
-  font-size: 14px;
-  transition: all 0.3s linear;
-  cursor: pointer;
-  text-decoration: none;
-  margin-right: 10px
-}
-.buttons-con .action-link-wrap a:hover {
-  background: #5A5C6C;
-  color: #fff;
+.olhos{animation: olhos   2s  alternate  infinite;
+  transform-origin: center;
 }
 
-#Polygon-1 , #Polygon-2 , #Polygon-3 , #Polygon-4 , #Polygon-4, #Polygon-5 {
-  animation: float 1s infinite ease-in-out alternate;
-}
-#Polygon-2 {
-  animation-delay: .2s;
-}
-#Polygon-3 {
-  animation-delay: .4s;
-}
-#Polygon-4 {
-  animation-delay: .6s;
-}
-#Polygon-5 {
-  animation-delay: .8s;
+.left-sparks{animation: left-sparks   4s  alternate  infinite;
+  transform-origin: 150px 156px;
 }
 
-@keyframes float {
-  100% {
-    transform: translateY(20px);
+.right-sparks{animation: left-sparks   4s  alternate  infinite;
+  transform-origin: 310px 150px;
+}
+
+.olhos{animation: olhos   2s  alternate  infinite;
+  transform-origin: center;
+}
+@keyframes scales{
+  from { transform: scale(0.98)}
+  to{ transform: scale(1)}
+}
+
+@keyframes rotatepao{
+  0% { transform:  rotate(0deg)}
+  50% , 60%{ transform:  rotate(-20deg)}
+  100%{  transform:  rotate(0deg) }
+
+}
+
+@keyframes olhos{
+  0%{
+    transform: rotateX(0deg);
+  }
+  100%{
+    transform: rotateX(30deg);
   }
 }
-@media (max-width: 450px) {
-  svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -250px;
-    margin-left: -190px;
+
+@keyframes left-sparks{
+  0%{
+    opacity: 0;
   }
-  .message-box {
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -190px;
-    text-align: center;
+
+}
+
+
+.main{
+
+  min-height: 600px;
+  margin: 0px auto;
+  width: auto;
+  max-width: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.path {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: dash 4s   alternate infinite;
+}
+
+@keyframes dash{
+  0%, 30%{
+    fill: 4B4B62;
+    stroke-dashoffset:   0;
   }
+  80%,100%{
+    fill: transparent;
+    stroke-dashoffset:  -200;
+  }
+
+
 }

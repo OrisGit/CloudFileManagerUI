@@ -7,7 +7,6 @@ import {AppConstants} from '../app-constants';
 import {User} from '../model/user';
 import {NotificationService} from './notification.service';
 import {SpinnerOverlayService} from './spinner-overlay.service';
-import {ContentManagerService} from "./content-manager.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +16,12 @@ export class UserService {
   constructor(private http: HttpClient,
               private session: SessionService,
               private notification: NotificationService,
-              private contentManager: ContentManagerService,
               private spinner: SpinnerOverlayService) {
   }
 
   logout(): void {
     if (this.session.isLoggedIn) {
       this.session.endSession();
-      this.contentManager.clean();
     }
   }
 
@@ -40,7 +37,6 @@ export class UserService {
       .pipe(tap(x => this.spinner.hide()))
       .pipe(tap(user => {
         this.session.startSession(user, token);
-        this.contentManager.loadContentForRoot();
       }))
       .pipe(catchError(error => {
         this.spinner.hide();

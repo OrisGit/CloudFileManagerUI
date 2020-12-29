@@ -1,10 +1,9 @@
 <header>
   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-    <img class="mr-2" src="assets/Фон.png" alt="" width="42" height="30">
-    <h5 class="my-0 mr-md-auto font-weight-normal"><a class="title" routerLink="/">Cloud File Storage</a></h5>
+    <h5 class="my-0 mr-md-auto font-weight-normal"><a class="title" routerLink="/">GamesList</a></h5>
     <div [hidden]="session.isLoggedIn">
-      <a class="btn btn-outline-success mr-md-3" routerLink="/signin" routerLinkActive="active">Sign in</a>
-      <a class="btn btn-outline-primary" routerLink="/signup" routerLinkActive="active">Sign up</a>
+      <a class="btn btn-outline-success mr-md-3" routerLink="/signin" routerLinkActive="active">Войти</a>
+      <a class="btn btn-outline-primary" routerLink="/signup" routerLinkActive="active">Зарегистрироваться</a>
     </div>
     <app-logout></app-logout>
   </div>

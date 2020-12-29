@@ -11,20 +11,20 @@ import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LogoutComponent } from './components/logout/logout.component';
 import {HttpInterceptorService} from './service/http-interceptor.service';
-import { FileManagerComponent } from './components/file-manager/file-manager.component';
-import { FileUploaderComponent } from './components/file-uploader/file-uploader/file-uploader.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerOverlayComponent } from './components/spinner-overlay/spinner-overlay.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import {MatTableModule} from "@angular/material/table";
+import { GenreTableComponent } from './components/genre-table/genre-table.component';
 
 
 const appRoutes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'file-manager', component: FileManagerComponent },
+  { path: 'genre', component: GenreTableComponent},
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -36,10 +36,9 @@ const appRoutes: Routes = [
     WelcomeComponent,
     PageNotFoundComponent,
     LogoutComponent,
-    FileManagerComponent,
-    FileUploaderComponent,
     SpinnerComponent,
-    SpinnerOverlayComponent
+    SpinnerOverlayComponent,
+    GenreTableComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +51,8 @@ const appRoutes: Routes = [
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       newestOnTop: true
-    })
+    }),
+    MatTableModule
   ],
   entryComponents: [
     SpinnerOverlayComponent
