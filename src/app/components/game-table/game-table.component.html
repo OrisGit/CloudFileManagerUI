@@ -54,7 +54,7 @@
             </tr>
             <tr>
               <td><div class="example-element-description">
-                <b>Разработчик:</b>   {{element.developer.name}}
+                <b>Разработчик:</b>   {{element.developer.name}} <a class="btn btn-outline-danger" (click)="prepareModalForDevelopers(element); modal.openBigModal(updateDialog)">Изменить</a>
               </div></td>
             </tr>
             <tr>
@@ -62,7 +62,7 @@
                 <div>
                   <br>
                   <div style="text-align: center; font-weight: bold; font-size: 20px;">
-                    Жанры
+                    Жанры <a class="btn btn-outline-danger" (click)="prepareModalForGanre(element); modal.openBigModal(updateDialog)">+</a>
                   </div>
                   <table mat-table [dataSource]="element.genres" class="mat-elevation-z8">
                     <ng-container matColumnDef="name">
@@ -88,7 +88,7 @@
                 <div>
                   <br>
                   <div style="text-align: center; font-weight: bold; font-size: 20px;">
-                    Платформы
+                    Платформы <a class="btn btn-outline-danger" (click)="prepareModalForPlatform(element); modal.openBigModal(updateDialog)">+</a>
                   </div>
                   <table mat-table [dataSource]="element.platforms" class="mat-elevation-z8">
                     <ng-container matColumnDef="name">
@@ -118,7 +118,7 @@
                 <div >
                   <br>
                   <div style="text-align: center; font-weight: bold; font-size: 20px;">
-                    Издатели
+                    Издатели <a class="btn btn-outline-danger" (click)="prepareModalForPublisher(element); modal.openBigModal(updateDialog)">+</a>
                   </div>
                   <table mat-table [dataSource]="element.publishers" class="mat-elevation-z8">
                     <ng-container matColumnDef="name">
@@ -196,5 +196,32 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click'); ">Закрыть</button>
     <button type="button" class="btn btn-primary" (click)="modal.dismiss('Save'); commmit()">{{modalButtonText}}</button>
+  </div>
+</ng-template>
+
+<ng-template #updateDialog let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Обновление связи</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table mat-table
+           [dataSource]="dataSource" multiTemplateDataRows
+           class="mat-elevation-z8">
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+          (click)="modal.dismiss('Save'); updateLink(element)">
+      </tr>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click'); ">Закрыть</button>
   </div>
 </ng-template>
