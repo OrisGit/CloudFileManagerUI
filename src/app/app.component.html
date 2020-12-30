@@ -1,6 +1,11 @@
 <header>
   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
     <h5 class="my-0 mr-md-auto font-weight-normal"><a class="title" routerLink="/">GamesList</a></h5>
+    <a class="nav-item nav-link" href="#" routerLink="/publishers">Publishers</a>
+    <a class="nav-item nav-link" href="#" routerLink="/developers">Developers</a>
+    <a class="nav-item nav-link" href="#" routerLink="/genres">Genres</a>
+    <a class="nav-item nav-link" href="#" routerLink="/platforms">Platforms</a>
+    <a class="nav-item nav-link" href="#" routerLink="/games">Games</a>
     <div [hidden]="session.isLoggedIn">
       <a class="btn btn-outline-success mr-md-3" routerLink="/signin" routerLinkActive="active">Войти</a>
       <a class="btn btn-outline-primary" routerLink="/signup" routerLinkActive="active">Зарегистрироваться</a>

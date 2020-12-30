@@ -22,7 +22,7 @@ export class SignupComponent implements OnInit {
     private session: SessionService
   ) {
     if (this.session.isLoggedIn) {
-      this.router.navigate(['']);
+      this.router.navigate(['games']);
     }
   }
 

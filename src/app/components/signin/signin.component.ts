@@ -23,7 +23,7 @@ export class SigninComponent implements OnInit {
     private session: SessionService
   ) {
     if (this.session.isLoggedIn) {
-      this.router.navigate(['']);
+      this.router.navigate(['games']);
     }
   }
 
@@ -34,7 +34,7 @@ export class SigninComponent implements OnInit {
     this.errorField.nativeElement.hidden = true;
     this.userService.login(this.email, this.password)
       .subscribe(
-        () => this.router.navigate(['file-manager']),
+        () => this.router.navigate(['games']),
         (error: HttpErrorResponse) => {
           console.log(error);
           if (error.status !== 401) {

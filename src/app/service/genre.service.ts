@@ -33,12 +33,12 @@ export class GenreService {
   }
 
   add(genre: Genre): Observable<any> {
-    const observable = this.http.post<any>(AppConstants.GENRE_API, {genre});
+    const observable = this.http.post<any>(AppConstants.GENRE_API, genre);
     return this.requestService.prepareRequest(observable);
   }
 
   update(genre: Genre, id: string): Observable<any> {
-    const observable = this.http.put<any>(AppConstants.GENRE_API + '/' + id, {genre});
+    const observable = this.http.put<any>(AppConstants.GENRE_API + '/' + id, genre);
     return this.requestService.prepareRequest(observable);
   }
 

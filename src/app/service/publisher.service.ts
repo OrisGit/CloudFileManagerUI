@@ -33,12 +33,12 @@ export class PublisherService {
   }
 
   add(publisher: Publisher): Observable<any> {
-    const observable = this.http.post<any>(AppConstants.PUBLISHER_API, {publisher});
+    const observable = this.http.post<any>(AppConstants.PUBLISHER_API, publisher);
     return this.requestService.prepareRequest(observable);
   }
 
   update(publisher: Publisher, id: string): Observable<any> {
-    const observable = this.http.put<any>(AppConstants.PUBLISHER_API + '/' + id, {publisher});
+    const observable = this.http.put<any>(AppConstants.PUBLISHER_API + '/' + id, publisher);
     return this.requestService.prepareRequest(observable);
   }
 

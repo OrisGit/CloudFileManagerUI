@@ -20,7 +20,7 @@ export class RequestService {
       .pipe(tap(x => this.spinner.hide()))
       .pipe(catchError(error => {
         this.spinner.hide();
-        this.notification.showError(error.error.message, 'Failed to update folder name');
+        this.notification.showError(error.error.message, 'Request failed');
         return throwError('');
       }));
   }

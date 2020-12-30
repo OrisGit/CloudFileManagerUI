@@ -9,11 +9,15 @@
     </ng-container>
 
 
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
-      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    <ng-container matColumnDef="headquarters">
+      <th mat-header-cell *matHeaderCellDef> Headquarters </th>
+      <td mat-cell *matCellDef="let element"> {{element.headquarters}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="founded">
+      <th mat-header-cell *matHeaderCellDef> founded </th>
+      <td mat-cell *matCellDef="let element"> {{element.founded}} </td>
+    </ng-container>
 
     <ng-container matColumnDef="update">
       <th mat-header-cell *matHeaderCellDef></th>
@@ -45,8 +49,10 @@
       <div class="form-group">
         <label for="name" class="col-form-label">Name:</label>
         <input type="text" class="form-control" id="name" name="name" [(ngModel)]="current.name">
-        <label for="description" class="col-form-label">Description:</label>
-        <input type="text" class="form-control" id="description" name="description" [(ngModel)]="current.description">
+        <label for="headquarters" class="col-form-label">Headquarters:</label>
+        <input type="text" class="form-control" id="headquarters" name="headquarters" [(ngModel)]="current.headquarters">
+        <label for="founded" class="col-form-label">Founded:</label>
+        <input type="date" class="form-control" id="founded" name="founded" [(ngModel)]="current.founded">
       </div>
     </form>
   </div>

@@ -34,12 +34,12 @@ export class DeveloperService {
   }
 
   add(developer: Developer): Observable<any> {
-    const observable = this.http.post<any>(AppConstants.DEVELOPERS_API, {developer});
+    const observable = this.http.post<any>(AppConstants.DEVELOPERS_API, developer);
     return this.requestService.prepareRequest(observable);
   }
 
   update(developer: Developer, id: string): Observable<any> {
-    const observable = this.http.put<any>(AppConstants.DEVELOPERS_API + '/' + id, {developer});
+    const observable = this.http.put<any>(AppConstants.DEVELOPERS_API + '/' + id, developer);
     return this.requestService.prepareRequest(observable);
   }
 

@@ -9,9 +9,14 @@
     </ng-container>
 
 
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
-      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    <ng-container matColumnDef="developer">
+      <th mat-header-cell *matHeaderCellDef> Developer </th>
+      <td mat-cell *matCellDef="let element"> {{element.developer}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="family">
+      <th mat-header-cell *matHeaderCellDef> Family </th>
+      <td mat-cell *matCellDef="let element"> {{element.family}} </td>
     </ng-container>
 
 
@@ -45,8 +50,10 @@
       <div class="form-group">
         <label for="name" class="col-form-label">Name:</label>
         <input type="text" class="form-control" id="name" name="name" [(ngModel)]="current.name">
-        <label for="description" class="col-form-label">Description:</label>
-        <input type="text" class="form-control" id="description" name="description" [(ngModel)]="current.description">
+        <label for="developer" class="col-form-label">Developer:</label>
+        <input type="text" class="form-control" id="developer" name="developer" [(ngModel)]="current.developer">
+        <label for="family" class="col-form-label">Family:</label>
+        <input type="text" class="form-control" id="family" name="family" [(ngModel)]="current.family">
       </div>
     </form>
   </div>

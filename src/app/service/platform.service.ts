@@ -33,12 +33,12 @@ export class PlatformService {
   }
 
   add(platform: Platform): Observable<any> {
-    const observable = this.http.post<any>(AppConstants.PLATFORM_API, {platform});
+    const observable = this.http.post<any>(AppConstants.PLATFORM_API, platform);
     return this.requestService.prepareRequest(observable);
   }
 
   update(platform: Platform, id: string): Observable<any> {
-    const observable = this.http.put<any>(AppConstants.PLATFORM_API + '/' + id, {platform});
+    const observable = this.http.put<any>(AppConstants.PLATFORM_API + '/' + id, platform);
     return this.requestService.prepareRequest(observable);
   }
 

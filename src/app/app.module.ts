@@ -18,13 +18,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import {MatTableModule} from "@angular/material/table";
 import { GenreTableComponent } from './components/genre-table/genre-table.component';
+import { PlatformTableComponent } from './components/platform-table/platform-table.component';
+import { DeveloperTableComponent } from './components/developer-table/developer-table.component';
+import { PublisherTableComponent } from './components/publisher-table/publisher-table.component';
+import { GameTableComponent } from './components/game-table/game-table.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 
 const appRoutes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'genre', component: GenreTableComponent},
+  { path: 'genres', component: GenreTableComponent},
+  { path: 'platforms', component: PlatformTableComponent},
+  { path: 'developers', component: DeveloperTableComponent},
+  { path: 'publishers', component: PublisherTableComponent},
+  { path: 'games', component: GameTableComponent},
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -38,7 +47,11 @@ const appRoutes: Routes = [
     LogoutComponent,
     SpinnerComponent,
     SpinnerOverlayComponent,
-    GenreTableComponent
+    GenreTableComponent,
+    PlatformTableComponent,
+    DeveloperTableComponent,
+    PublisherTableComponent,
+    GameTableComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +65,8 @@ const appRoutes: Routes = [
       positionClass: 'toast-bottom-right',
       newestOnTop: true
     }),
-    MatTableModule
+    MatTableModule,
+    MatFormFieldModule
   ],
   entryComponents: [
     SpinnerOverlayComponent
